@@ -38,7 +38,7 @@ router.post('/create', multer.single('file1'), function (req, res, next) {
   console.log('title = '+title);
 
   // Upload file1 to azure blob storage and the details to database
-  azureblob.createBlockBlobFromStream('shareitcontainer', req.file.originalname, getStream(req.file.buffer), req.file.size, function(error, result, response){
+  azureblob.createBlockBlobFromStream('quizcloudcontainer', req.file.originalname, getStream(req.file.buffer), req.file.size, function(error, result, response){
     if(!error){
       // file uploaded
       console.log("%o", response);

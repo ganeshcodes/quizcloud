@@ -1,0 +1,21 @@
+extends layout
+
+block content
+  h1 Hello
+  form(method="POST", id="uploadform", action="/create", enctype="multipart/form-data")
+    .form-group
+      label(for="username") Enter title
+      input.form-control(type="text", name="title", id="title" placeholder="Title of the photo")
+    .form-group
+      label(for="file1") Upload file
+      input.form-control(type="file", name="file1", id="file1")
+      input(type='hidden', name='username', value='')
+    button.btn.btn-success(type="submit") Submit
+
+  unless message.text == ''
+    div(class=message.style, style='margin-top: 10px')
+      strong= message.text
+
+  unless fileurl == ''
+    div(class='alert alert-warning', style='margin-top: 10px')
+      a(href=fileurl) Download

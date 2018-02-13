@@ -138,7 +138,9 @@ router.get('/show', function(req, res, next) {
     }
     console.log('rowcount = %o',rowcount);
     console.log('rows = %o',results);
-    res.render('view.pug', { message:{text:''}, rows: results });
+    var fileurl = azurestorageURL + encodeURIComponent(results[0].filename);
+
+    res.render('view.pug', {filelink:fileurl , message:{text:''}, rows: results });
   });
   request.on('row', function(columns) {
     var row = {};

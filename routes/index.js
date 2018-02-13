@@ -138,15 +138,18 @@ router.get('/show', function(req, res, next) {
     }
     console.log('rowcount = %o',rowcount);
     console.log('rows = %o',results);
-    var fileurl = azurestorageURL + encodeURIComponent(results[0].filename);
 
-    res.render('view.pug', {filelink:fileurl , message:{text:''}, rows: results });
+    res.render('view.pug', {message:{text:''}, rows: results });
   });
   request.on('row', function(columns) {
     var row = {};
     columns.forEach(function(column) {
         console.log("%s\t%s", column.metadata.colName, column.value);
         row[column.metadata.colName] = column.value;
+        if (column.metadata.colName == 'filename') {
+          var fileurl = azurestorageURL + encodeURIComponent(column.value);
+          row['filelink'] = fileurl;
+        }
     });
     results.push(row);
   });

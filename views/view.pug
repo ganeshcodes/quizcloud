@@ -17,7 +17,7 @@ block content
                 p Time: 
                     span.ratingscount #{row.time}
             .panel-body
-                img(src=filelink, width=300, height=300)
+                img(src=row.filelink, width=300, height=300)
 
     unless message.text == ''
         div(class=message.style, style='margin-top: 10px')

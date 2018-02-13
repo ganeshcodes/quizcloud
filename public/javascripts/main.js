@@ -1,4 +1,4 @@
-$(document).ready(function(){
+/*$(document).ready(function(){
     $('.ratingbtn').click(function(){
         // Query the necessary fields
         var id = $(this).attr('value');
@@ -17,4 +17,4 @@ $(document).ready(function(){
             $('#msg').html('<strong> '+result.text+' </strong>');
         }});
     });
-});
+});*/

@@ -7,6 +7,16 @@ block content
       label(for="file1") Upload file
       input.form-control(type="file", name="file1", id="file1")
       input(type='hidden', name='username', value='')
+    .form-group
+      label(for="username") Enter username
+      input.form-control(type="text", name="username", id="username")
+    .form-group
+      label(for="year") Enter year
+      input.form-control(type="text", name="year", id="year")
+    .form-group
+      label(for="desc") Enter description
+      input.form-control(type="text", name="desc", id="desc")
+    
     button.btn.btn-success(type="submit") Submit
 
   unless message.text == ''

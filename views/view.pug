@@ -1,7 +1,24 @@
 extends layout
 
 block content
-    img(src=fileurl)
-    p= result.filename
-    p= result.year
-    p= result.description
+    div(id='msg', style='margin-top: 10px')
+    .panel-group
+      each row in rows
+        .panel.panel-default
+            .panel-heading(id=row.filename)
+                p Filename: 
+                    span.title #{row.filename}
+                p Uploaded by: 
+                    span.username #{row.username}
+                p year: 
+                    span.ratings #{row.year}
+                p Description: 
+                    span.ratingscount #{row.description}
+                p Time: 
+                    span.ratingscount #{row.time}
+            .panel-body
+
+    unless message.text == ''
+        div(class=message.style, style='margin-top: 10px')
+        strong= message.text
+

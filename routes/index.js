@@ -79,10 +79,12 @@ router.post('/create', multer.single('file1'), function (req, res, next) {
         text: 'File uploaded successfully!', 
         style: 'alert alert-success'
       };
-      res.render('create.pug', { fileurl: filelink, message: success });
-
       // Create a query to insert row
-      /*var query = "INSERT INTO shareitmain(username, title, modified, ratings, filelink, ratingscount) VALUES('"+username+"','"+title+"','"+modified+"','"+ratings+"','"+filelink+"','"+ratingscount+"')";
+      var time = result.lastModified;
+      var username = req.body.username;
+      var year = req.body.year;
+      var desc = req.body.desc;
+      var query = "INSERT INTO PictureDetails(username, filename, year, description, time) VALUES('"+username+"','"+filename+"','"+year+"','"+desc+"','"+time+"')";
       var request = new Request(query, function(err,rowcount,rows){
         if (err){
           console.log('error %o',err);
@@ -94,14 +96,12 @@ router.post('/create', multer.single('file1'), function (req, res, next) {
         }
         console.log(rowcount + ' row(s) returned');
         var success = {
-          text: 'Photo shared successfully. Try sharing another one!', 
+          text: 'Inserted to DB successfully. Try sharing another one!', 
           style: 'alert alert-success'
         };
         res.render('create.pug', { name: req.body.username, message: success });
       });
       db.execSql(request);
-      console.log(username+' '+title+' '+filename+' '+modified+' '+filelink);*/
-
     } else {
       console.error("error : %o", error);
       var msg = {
@@ -120,5 +120,35 @@ function getStream(buffer){
   stream.push(null);
   return stream;
 }
+
+
+router.get('/show', function(req, res, next) {
+  console.log('b %o', req.body.action);
+  var results = [];
+  // Query all the photos shared by other users
+  var query = "select * from PictureDetails";
+  var request = new Request(query, function(err,rowcount,rows){
+    if (err){
+      console.log('error %o',err);
+      var error = {
+        text: 'Something went wrong. Try again later!', 
+        style: 'alert alert-danger'
+      };
+      res.render('view.pug', { name: req.body.username, message: error });
+    }
+    console.log('rowcount = %o',rowcount);
+    console.log('rows = %o',results);
+    res.render('view.pug', { message:{text:''}, rows: results });
+  });
+  request.on('row', function(columns) {
+    var row = {};
+    columns.forEach(function(column) {
+        console.log("%s\t%s", column.metadata.colName, column.value);
+        row[column.metadata.colName] = column.value;
+    });
+    results.push(row);
+  });
+  db.execSql(request);
+});
 
 module.exports = router;

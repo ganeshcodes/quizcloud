@@ -1,4 +1,9 @@
 extends layout
 
 block content
-  
+
+  form(method="POST", id="uploadform" action="/login")
+    .form-group
+      label(for="username") Enter Username
+        input.form-control(type="text", name="username", id="username" placeholder="Type username here")
+    button.btn.btn-success(type="submit") Login

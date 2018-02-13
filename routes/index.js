@@ -10,7 +10,7 @@ var azureblob = azure.createBlobService(
   'hL1Q5vOz5XSlJ5FCyNHHJLQDKcVVzeRJfADE4Z4JfG/lvLZL0W8IunpTbfDFHADKaik99nNqucUOuXulFw3a0A=='
 )
 
-var azurestorageURL = 'https://shareitfiles.blob.core.windows.net/shareitcontainer/';
+var azurestorageURL = 'https://shareitfiles.blob.core.windows.net/quizcloudcontainer/';
 
 // [START multer]
 const Multer = require('multer');
@@ -29,6 +29,36 @@ router.get('/', function(req, res, next) {
 
 router.get('/create', function(req, res, next) {
   res.render('create.pug', { fileurl:'', message: {text: ''} });
+});
+
+router.post('/login', function(req, res, next) {
+  // query db
+  var results = [];
+  var query = "select * from Picture where filename='cat.jpg'";
+  var request = new Request(query, function(err,rowcount,rows){
+    if (err){
+      console.log('error %o',err);
+      var error = {
+        text: 'Something went wrong. Try again later!', 
+        style: 'alert alert-danger'
+      };
+      res.render('view.pug', { name: req.body.username, message: error });
+    }
+    console.log('rowcount = %o',rowcount);
+    console.log('rows = %o',results);
+    var filelink = azurestorageURL + encodeURIComponent(results[0].filename);
+    console.log('filelink = '+filelink);
+    res.render('view.pug', { fileurl: filelink, result: results[0] });
+  });
+  request.on('row', function(columns) {
+    var row = {};
+    columns.forEach(function(column) {
+        console.log("%s\t%s", column.metadata.colName, column.value);
+        row[column.metadata.colName] = column.value;
+    });
+    results.push(row);
+  });
+  db.execSql(request);
 });
 
 router.post('/create', multer.single('file1'), function (req, res, next) {

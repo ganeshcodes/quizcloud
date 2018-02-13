@@ -4,9 +4,6 @@ block content
   h1 Hello
   form(method="POST", id="uploadform", action="/create", enctype="multipart/form-data")
     .form-group
-      label(for="username") Enter title
-      input.form-control(type="text", name="title", id="title" placeholder="Title of the photo")
-    .form-group
       label(for="file1") Upload file
       input.form-control(type="file", name="file1", id="file1")
       input(type='hidden', name='username', value='')
